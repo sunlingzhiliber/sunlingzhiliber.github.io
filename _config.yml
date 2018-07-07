@@ -14,20 +14,20 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 lang: en-US
-title: My Awesome Site
-email:
-description:
-baseurl: # the optional subpath of your site, e.g. "/blog"
-url: # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-author:
-  name:
+title: My GitPage To Record Something
+email: sun_liber@126.com
+description: For my own
+baseurl: "/blog"
+url: "https://sunlingzhiliber.github.io"
+author:LingZhi Sun
+  name:孙菱志
   twitter:
   picture:
 twitter_username:
-github_username:
+github_username:sunlingzhiliber
 logo: # path of site logo, e.g. "/assets/images/logo.png"
-search: # true, false (default)
-search_full_content: false # true, false (default)
+search: true
+search_full_content: false # true, false (default) 开启了会将搜索改为全文,会大大的影响页面加载性能
 search_provider: # lunr (default), algolia
 algolia:
   application_id: # YOUR_APPLICATION_ID

@@ -1,5 +1,5 @@
 # Theme Skin
-skin: default # default, night, plum, sea, soft, steel
+skin: steel # default, night, plum, sea, soft, steel
 
 # Theme Text
 t:
@@ -36,3 +36,6 @@ google_fonts:
 navigation_pages:
   - about.md
   - cv.md
+  
+paginate: 5  # amount of posts to show per page
+paginate_path: /page:num/
