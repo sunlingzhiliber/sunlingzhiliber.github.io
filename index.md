@@ -1,6 +1,6 @@
 ---
 layout: home
-# paginate: true
+paginate: true
 alt_title: "Sun_liber"
 sub_title: "Make everything deserve it"
 image: /assets/images/amine-ounnas-180287.jpg
