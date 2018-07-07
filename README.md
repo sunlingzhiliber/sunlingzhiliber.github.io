@@ -1,221 +1,5 @@
-# [Basically Basic Jekyll Theme][1]
+# USING MANNUL
 
-[![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/mmistakes/jekyll-theme-basically-basic/blob/master/LICENSE.md)
-[![Jekyll](https://img.shields.io/badge/jekyll-%3E%3D%203.6-blue.svg)](https://jekyllrb.com/)
-[![Ruby gem](https://img.shields.io/gem/v/jekyll-theme-basically-basic.svg)](https://rubygems.org/gems/jekyll-theme-basically-basic)
-[![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-green.svg?logo=paypal)](https://www.paypal.me/mmistakes)
-
-Basically Basic is a [Jekyll theme](https://jekyllrb.com/docs/themes/) meant as 
-a substitute for the default [Minima](https://github.com/jekyll/minima), with a 
-few enhancements thrown in for good measure:
-
-- Clean responsive design with [six customizable skins](#skin)
-- Curriculum Vitæ/Resume layout powered by [JSON data](http://registry.jsonresume.org/)
-- About page layout
-- Site-wide search provided by [Algolia](https://www.algolia.com/) or [Lunr](https://lunrjs.com/).
-- Disqus Comments and Google Analytics support
-- SEO best practices via [Jekyll SEO Tag](https://github.com/jekyll/jekyll-seo-tag/)
-
-[![Basically Basic live preview][2]][1]
-
-[1]: https://mmistakes.github.io/jekyll-theme-basically-basic/
-[2]: https://cloud.githubusercontent.com/assets/1376749/24117647/6dede894-0d81-11e7-9c2c-f19bea45e219.jpg (live preview)
-
-## Table of Contents
-
-1. [Installation](#installation)
-   1. [Ruby Gem Method](#ruby-gem-method)
-   2. [GitHub Pages Method](#github-pages-method)
-      1. [Remove the Unnecessary](#remove-the-unnecessary)
-2. [Upgrading](#upgrading)
-   1. [Ruby Gem](#ruby-gem)
-   2. [Remote Theme](#remote-theme)
-   3. [Use Git](#use-git)
-      1. [Pull Down Updates](#pull-down-updates)
-   4. [Update Files Manually](#update-files-manually)
-3. [Structure](#structure)
-   1. [Starting Fresh](#starting-fresh)
-   2. [Starting from `jekyll new`](#starting-from-jekyll-new)
-4. [Configuration](#configuration)
-   1. [Skin](#skin)
-   2. [Google Fonts](#google-fonts)
-   3. [Text](#text)
-   4. [Navigation](#navigation)
-   5. [Pagination](#pagination)
-   6. [Search](#search)
-      1. [Lunr (default)](#lunr-default)
-      2. [Algolia](#algolia)
-   7. [Author](#author)
-   8. [Reading Time](#reading-time)
-   9. [Comments (via Disqus)](#comments-via-disqus)
-   10. [Google Analytics](#google-analytics)
-5. [Layouts](#layouts)
-   1. [`layout: default`](#layout-default)
-   2. [`layout: post`](#layout-post)
-   3. [`layout: page`](#layout-page)
-   4. [`layout: home`](#layout-home)
-   5. [`layout: posts`](#layout-posts)
-   6. [`layout: categories`](#layout-categories)
-   7. [`layout: tags`](#layout-tags)
-   8. [`layout: collection`](#layout-collection)
-   9. [`layout: category`](#layout-category)
-   10. [`layout: tag`](#layout-tag)
-   11. [`layout: about`](#layout-about)
-   12. [`layout: cv`](#layout-cv)
-6. [Images](#images)
-7. [Customization](#customization)
-   1. [Overriding Includes and Layouts](#overriding-includes-and-layouts)
-   2. [Customizing Sass (SCSS)](#customizing-sass-scss)
-   3. [Customizing JavaScript](#customizing-javascript)
-   4. [SVG Icons](#svg-icons)
-   5. [Customizing Sidebar Content](#customizing-sidebar-content)
-8. [Development](#development)
-9. [Contributing](#contributing)
-10. [Credits](#credits)
-11. [License](#license)
-
-## Installation
-
-If you're running Jekyll v3.5+ and self-hosting you can quickly install the 
-theme as a Ruby gem. If you're hosting with GitHub Pages you can install as a 
-remote theme or directly copy all of the theme files (see [structure](#structure) 
-below) into your project.
-
-### Ruby Gem Method
-
-1. Add this line to your Jekyll site's `Gemfile`:
-
-   ```ruby
-   gem "jekyll-theme-basically-basic"
-   ```
-2. Add this line to your Jekyll site's `_config.yml` file:
-
-   ```yaml
-   theme: jekyll-theme-basically-basic
-   ```
-
-2. Then run [Bundler](http://bundler.io/) to install the theme gem and dependencies:
-   
-   ```terminal
-   bundle install
-   ```
-
-### GitHub Pages Method
-
-GitHub Pages has added [full support](https://github.com/blog/2464-use-any-theme-with-github-pages) 
-for any GitHub-hosted theme.
-
-1. Replace `gem "jekyll"` with:
-
-   ```ruby
-   gem "github-pages", group: :jekyll_plugins
-   ```
-
-2. Run `bundle update` and verify that all gems install properly.
-
-3. Add `remote_theme: "mmistakes/jekyll-theme-basically-basic"` to your 
-   `_config.yml` file. Remove any other `theme:` or `remote_theme:` entries.
-
----
-
-**Note:** Your Jekyll site should be viewable immediately at 
-<http://USERNAME.github.io>. If it's not, you can force a rebuild by 
-**Customizing Your Site** (see below for more details).
-
-If you're hosting several Jekyll based sites under the same GitHub username you 
-will have to use Project Pages instead of User Pages. Essentially you rename the 
-repo to something other than **USERNAME.github.io** and create a `gh-pages` 
-branch off of `master`. For more details on how to set things up check 
-[GitHub's documentation](https://help.github.com/articles/user-organization-and-project-pages/).
-
-#### Remove the Unnecessary
-
-If you forked or downloaded the `jekyll-theme-basically-basic` repo you can 
-safely remove the following files and folders:
-
-- `.editorconfig`
-- `.gitattributes`
-- `.github`
-- `.scss-lint.yml`
-- `CHANGELOG.md`
-- `jekyll-theme-basically-basic.gemspec`
-- `LICENSE.md`
-- `Rakefile`
-- `README.md`
-- `screenshot.png`
-- `/docs`
-- `/example`
-
-## Upgrading
-
-If you're using the Ruby Gem or remote theme versions of Basically Basic, 
-upgrading is fairly painless.
-
-To check which version you are currently using, view the source of your built 
-site and you should something similar to:
-
-```
-<!--
-    Basically Basic Jekyll Theme 1.2.0
-    Copyright 2017-2018 Michael Rose - mademistakes.com | @mmistakes
-    Free for personal and commercial use under the MIT license
-    https://github.com/mmistakes/jekyll-basically-theme/blob/master/LICENSE.md
--->
-```
-
-At the top of every `.html` file, `/assets/css/main.css`, and `/assets/js/main.js`.
-
-### Ruby Gem
-
-Simply run `bundle update` if you're using Bundler (have a `Gemfile`) or `gem 
-update jekyll-theme-basically-basic` if you're not.
-
-### Remote Theme
-
-When hosting with GitHub Pages you'll need to push up a commit to force a 
-rebuild with the latest [theme release](https://github.com/mmistakes/jekyll-theme-basically-basic/releases).
-
-An empty commit will get the job done too if you don't have anything to push at 
-the moment:
-
-```terminal
-git commit --allow-empty -m "Force rebuild of site"
-```
-
-### Use Git
-
-If you want to get the most out of the Jekyll + GitHub Pages workflow, then 
-you'll need to utilize Git. To pull down theme updates you must first ensure 
-there's an upstream remote. If you forked the theme's repo then you're likely 
-good to go.
-
-To double check, run `git remote -v` and verify that you can fetch from `origin https://github.com/mmistakes/jekyll-theme-basically-basic.git`.
-
-To add it you can do the following:
-
-```terminal
-git remote add upstream https://github.com/mmistakes/jekyll-theme-basically-basic.git
-```
-
-#### Pull Down Updates
-
-Now you can pull any commits made to theme's `master` branch with:
-
-```terminal
-git pull upstream master
-```
-
-Depending on the amount of customizations you've made after forking, there's 
-likely to be merge conflicts. Work through any conflicting files Git flags, 
-staging the changes you wish to keep, and then commit them.
-
-### Update Files Manually
-
-Another way of dealing with updates is [downloading the theme](https://github.com/mmistakes/jekyll-theme-basically-basic/archive/master.zip) 
---- replacing your layouts, includes, and assets with the newer ones manually. 
-To be sure that you don't miss any changes it's probably a good idea to review 
-the theme's [commit history](https://github.com/mmistakes/jekyll-theme-basically-basic/commits/master) 
-to see what's changed since.
 
 Here's a quick checklist of the important folders/files you'll want to be 
 mindful of:
@@ -231,9 +15,6 @@ mindful of:
 
 ---
 
-**Note:** If you're not seeing the latest version, be sure to flush browser and 
-CDN caches. Depending on your hosting environment older versions of 
-`/assets/css/main.css`, `/assets/js/main.js`, or `*.html` may be cached.
 
 ## Structure
 
@@ -241,12 +22,8 @@ Layouts, includes, Sass partials, and data files are all placed in their default
 locations. Stylesheets and scripts in `assets`, and a few development related 
 files in the project's root directory.
 
-**Please note:** If you installed Basically Basic via the Ruby Gem method, theme 
-files found in `/_layouts`, `/_includes`, `/_sass`, and `/assets` will be 
-missing. This is normal as they are bundled with the [`jekyll-theme-basically-basic`](https://rubygems.org/gems/jekyll-theme-basically-basic) gem.
 
 ```terminal
-jekyll-theme-basically-basic
 ├── _data                      # data files
 |  └── theme.yml               # theme settings and custom text
 ├── _includes                  # theme includes and SVG icons
@@ -270,21 +47,14 @@ the following files:
 - [`/_data/theme.yml`](_data/theme.yml)
 - [`index.md`](index.md) 
 
-**Note:** Consult the [**pagination**](#pagination) documentation below for
-instructions on how to enable it for the home page.
 
-### Starting from `jekyll new`
 
-Using the `jekyll new` command will get you up and running the quickest.
-
-Edit `_config.yml` and create `_data/theme.yml` as instructed above and you're 
-good to go.
 
 ## Configuration
 
 Configuration of site-wide elements (`lang`, `title`, `description`, `logo`, 
 `author`, etc.) happens in your project's `_config.yml`. See the 
-[example configuration](example/_config.yml) in this repo for additional 
+[ configuration](/_config.yml) in this repo for additional 
 reference.
 
 |                    | Description                                                               |
@@ -298,14 +68,9 @@ reference.
 | `twitter_username` | Site-wide Twitter username, used as a link in sidebar                     |
 | `github_username`  | Site-wide GitHub username, used as a link in sidebar                      |
 
-For more configuration options be sure to consult the documentation for: 
-[**jekyll-seo-tag**][jekyll-seo-tag], [**jekyll-feed**][jekyll-feed], 
-[**jekyll-paginate**][jekyll-paginate], and [**jekyll-sitemap**][jekyll-sitemap].
 
-[jekyll-seo-tag]: https://github.com/jekyll/jekyll-seo-tag
-[jekyll-feed]: https://github.com/jekyll/jekyll-feed
-[jekyll-paginate]: https://github.com/jekyll/jekyll-paginate
-[jekyll-sitemap]: https://github.com/jekyll/jekyll-sitemap
+
+
 
 ### Skin
 
@@ -936,62 +701,3 @@ grammar, etc.
 
 ---
 
-## Credits
-
-### Creator
-
-**Michael Rose**
-
-- <https://mademistakes.com>
-- <https://twitter.com/mmistakes>
-- <https://github.com/mmistakes>
-
-### Icons + Demo Images:
-
-- [Simple Icons](https://simpleicons.org/)
-- [Noun Project](https://thenounproject.com)
-- [Unsplash](https://unsplash.com/)
-
-### Other:
-
-- [Jekyll](http://jekyllrb.com/)
-- [Susy](http://susy.oddbird.net/)
-- [Breakpoint](http://breakpoint-sass.com/)
-
----
-
-## License
-
-The MIT License (MIT)
-
-Copyright (c) 2017-2018 Michael Rose and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Basically Basic incorporates icons from [The Noun Project](https://thenounproject.com/).
-Icons are distributed under Creative Commons Attribution 3.0 United States (CC BY 3.0 US).
-
-Basically Basic incorporates photographs from [Unsplash](https://unsplash.com).
-
-Basically Basic incorporates [Susy](http://susy.oddbird.net/),
-Copyright (c) 2017, Miriam Eric Suzanne.
-Susy is distributed under the terms of the [BSD 3-clause "New" or "Revised" License](https://opensource.org/licenses/BSD-3-Clause).
-
-Basically Basic incorporates [Breakpoint](http://breakpoint-sass.com/).
-Breakpoint is distributed under the terms of the [MIT/GPL Licenses](http://opensource.org/licenses/MIT).
