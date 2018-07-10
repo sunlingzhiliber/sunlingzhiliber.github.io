@@ -12,6 +12,7 @@
   position: relative;
   margin-top: -3rem; /* compensate for intro top margin */
   margin-bottom: 3rem;
+  margin-right:20%;/*让内容左侧偏移后照片也要偏移*/
 
   &::before {
     position: absolute;
@@ -43,6 +44,7 @@
   margin-bottom: 1rem;
   color: tint($text-color, 25%);
   line-height: 1;
+  word-wrap: break-word;
 }
 
 .intro-subtitle {

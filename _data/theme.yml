@@ -8,10 +8,6 @@ t:
   skip_content: "Skip to content"
   skip_footer: "Skip to footer"
   menu: "Menu"
-  search: "Search"
-  site_search: "Site Search"
-  results_found: "Result(s) found"
-  search_placeholder_text: "Enter your search term..."
   home: "Home"
   newer: "Newer"
   older: "Older"
@@ -35,4 +31,6 @@ google_fonts:
 
 navigation_pages:
   - about.md
-  - cv.md
+  - posts.md
+  - tags.md
+  - categories.md

@@ -39,10 +39,12 @@ function toggleClassMenu() {
     myMenu.classList.add('is--visible');
     myToggle.classList.add('open');
     myWrapper.classList.add('is--pushed');
+    myInitialContent.classList.add('is--pushed-content');
   } else {
     myMenu.classList.remove('is--visible');
     myToggle.classList.remove('open');
     myWrapper.classList.remove('is--pushed');
+    myInitialContent.classList.remove('is--pushed-content');
   }
 }
 
