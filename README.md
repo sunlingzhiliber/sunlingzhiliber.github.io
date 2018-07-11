@@ -14,6 +14,7 @@ bundle exec rake preview
 
 
 ## 公式
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 通过在线网站实现
 行内:$_{a}^{b}\textrm{c}$
 
@@ -21,13 +22,10 @@ bundle exec rake preview
 $$x > y$$
 
 
+<img src="https://latex.codecogs.com/gif.latex?ax^{2}&space;&plus;&space;by^{2}&space;&plus;&space;c&space;=&space;0" title="ax^{2} + by^{2} + c = 0" />
 
-## 插件生成的目录
-Markdown TOC 插件生成目录
+![公式1](https://latex.codecogs.com/gif.latex?ax^{2}&space;&plus;&space;by^{2}&space;&plus;&space;c&space;=&space;0)
 
 
-# end
 
-## dawdaw
 
-### 大王大
