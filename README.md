@@ -12,9 +12,9 @@ bundle exec rake preview
 ```
 
 
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.jsconfig=default"></script>
 
 ## 公式
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 通过在线网站实现
 行内:$_{a}^{b}\textrm{c}$
 
