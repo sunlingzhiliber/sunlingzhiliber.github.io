@@ -1,4 +1,3 @@
-[TOC]
 #Start
 ```
 bundle exec rake preview
@@ -12,19 +11,6 @@ bundle exec rake preview
 ```
 
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.jsconfig=default"></script>
-
-## 公式
-通过在线网站实现
-行内:$_{a}^{b}\textrm{c}$
-
-段落:
-$$x > y$$
-
-
-<img src="https://latex.codecogs.com/gif.latex?ax^{2}&space;&plus;&space;by^{2}&space;&plus;&space;c&space;=&space;0" title="ax^{2} + by^{2} + c = 0" />
-
-![公式1](https://latex.codecogs.com/gif.latex?ax^{2}&space;&plus;&space;by^{2}&space;&plus;&space;c&space;=&space;0)
 
 
 
