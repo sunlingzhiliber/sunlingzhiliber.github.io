@@ -22,9 +22,9 @@ url: ""  # the base hostname & protocol for your site, e.g. http://example.com
 author:
   name: LingZhi Sun
   twitter: 
-  picture: https://api.adorable.io/avatars/285/johndoe.png
-twitter_username: Towlette_Pettetucci
-github_username: Towlette_Pettetucci
+  picture: 
+twitter_username: 
+github_username: 
 logo: /assets/icons/basically-basic-logo-light.svg
 search: true
 search_full_content: false # 全文搜索会导致页面加载过慢,只有正文的前50个单词会被进行搜索
