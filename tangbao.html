@@ -15,6 +15,10 @@
             background-image: url('bg.jpg');
             font-size: 85%;
             margin: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         h2 {
@@ -39,6 +43,73 @@
         .timer b {
             color: rgb(253, 99, 125);
         }
+
+
+        #perspective {
+            perspective: 800px;
+            /*景深*/
+        }
+
+        #wrap {
+            position: relative;
+            width: 150px;
+            height: 178px;
+            margin: 200px auto;
+            transform-style: preserve-3d;
+            /*构建3d场景*/
+            transform: rotateX(-20deg) rotateY(0deg);
+        }
+
+        #wrap .image-block {
+            position: absolute;
+            transform: rotateY(0deg);
+            /*transition: 1s;值的改变有一个过渡的过程*/
+        }
+
+        #wrap .image-block img {
+            width: 150px;
+            height: 178px;
+        }
+
+        .pic {
+            border: 2px solid #fff;
+            padding: 5px;
+            -moz-box-shadow: 0px 0px 8px 2px #fdfdfd;
+            /*firefox*/
+            -webkit-box-shadow: 0px 0px 8px 2px #fdfdfd;
+            /*webkit*/
+            box-shadow: 0px 0px 8px 2px #fdfdfd;
+            /*opera或ie9*/
+        }
+
+        /*倒影效果 s*/
+        .reflection {
+            position: relative;
+            padding-left: 8px;
+        }
+
+        .reflection img {
+            -webkit-transform: scaleY(-1);
+            -moz-transform: scaleY(-1);
+            -ms-transform: scaleY(-1);
+            -o-transform: scaleY(-1);
+            transform: scaleY(-1);
+            filter: flipv;
+            opacity: 0.50;
+            filter: alpha(opacity='50');
+        }
+
+        .reflection .overlay {
+            position: absolute;
+            top: 0px;
+            left: 8px;
+            width: 150px;
+            height: 178px;
+            background-image: -moz-linear-gradient(center bottom, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0) 75%);
+            background-image: -o-linear-gradient(rgba(0, 0, 0, 0) 25%, rgb(0, 0, 0) 40%);
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.60, rgb(0, 0, 0)), color-stop(0.75, rgba(0, 0, 0, 0)));
+            filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColor=0, EndColorStr=#000000);
+        }
     </style>
 </head>
 
@@ -52,32 +123,139 @@
             <b id="s"></b> Seconds
         </div>
     </div>
+    <div id="perspective">
+        <div id="wrap">
+    
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/1.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/1.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/2.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/2.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/3.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/3.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/4.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/4.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/5.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/5.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="image-block">
+                <img class="pic" src="assets/tangbao/6.jpg" />
+                <div class="reflection">
+                    <img src="assets/tangbao/6.jpg" />
+                    <div class="overlay"></div>
+                </div>
+            </div>
+         
+        </div>
+    </div>
 
 </body>
 
 <script>
- function timer() {
-            var start = new Date('2018/09/01'); //2018/09/
-            var t = new Date() - start;
-            var h = ~~(t / 1000 / 60 / 60 % 24);
-            if (h < 10) {
-                h = '0' + h;
-            }
-            var m = ~~(t / 1000 / 60 % 60);
-            if (m < 10) {
-                m = '0' + m;
-            }
-            var s = ~~(t / 1000 % 60);
-            if (s < 10) {
-                s = '0' + s;
-            }
-            document.getElementById('d').innerHTML = ~~(t / 1000 / 60 / 60 / 24);
-            document.getElementById('h').innerHTML = h;
-            document.getElementById('m').innerHTML = m;
-            document.getElementById('s').innerHTML = s;
+    function timer() {
+        var start = new Date('2018/09/01'); //2018/09/
+        var t = new Date() - start;
+        var h = ~~(t / 1000 / 60 / 60 % 24);
+        if (h < 10) {
+            h = '0' + h;
         }
-        timer();
-        setInterval(timer, 1000);
+        var m = ~~(t / 1000 / 60 % 60);
+        if (m < 10) {
+            m = '0' + m;
+        }
+        var s = ~~(t / 1000 % 60);
+        if (s < 10) {
+            s = '0' + s;
+        }
+        document.getElementById('d').innerHTML = ~~(t / 1000 / 60 / 60 / 24);
+        document.getElementById('h').innerHTML = h;
+        document.getElementById('m').innerHTML = m;
+        document.getElementById('s').innerHTML = s;
+    }
+    timer();
+    setInterval(timer, 1000);
 </script>
+
+
+<script>
+    /*功能一：
+        所有的图片撑开成一个圆
+        1.所有图片旋转一定的度数
+        0*deg   1*deg   2*deg
+        2.便利所有图片，并动态绑定一个度数值
+      功能二：
+        拖拽
+        1.按下  移动  松开
+        相册移动的位置  鼠标移动的位置
+        相册移动的距离：
+        坐标差 = 现在的坐标 - 以前的坐标
+        算出相册的总度数  累加上差值
+     */
+    window.onload = function () { //页面加载完毕再执行
+        var oImg = document.getElementsByClassName('image-block');
+        var deg = 360 / 6; //旋转的单位度数
+        var nowX, nowY, lastX, lastY, minsX, minsY, roX = -20, roY = 0;
+        Array.prototype.forEach.call(oImg, function (el, index) {
+            el.style.transform = 'rotateY(' + index * deg + 'deg) translateZ(400px)';
+            el.style.transition = '1s ' + (12 - index) * 0.05 + 's';
+        });
+
+        document.onmousedown = function (e) {
+            //            点击
+            var e = e || window.event;
+            /*兼容IE 与 火狐*/
+            lastX = e.clientX;
+            lastY = e.clientY;
+            this.onmousemove = function (e) {
+                //               移动
+                var e = e || window.event;
+                //                现在的值
+                nowX = e.clientX;
+                nowY = e.clientY;
+                //                即将要做的事情
+                //                坐标差
+                minsX = nowX - lastX;
+                minsY = nowY - lastY;
+                //                旋转的总度数的值
+                roX -= minsY * 0.2;
+                roY += minsX * 0.2;
+                //id获取的元素可以直接通过元素Id去获取  可以不需要通过document.getElementById();
+                wrap.style.transform = 'rotateX(' + roX + 'deg) rotateY(' + roY + 'deg)'
+                //                用完的值
+                lastX = nowX;
+                lastY = nowY;
+            }
+            this.onmouseup = function (e) {
+                this.onmousemove = null;
+                this.onmouseup = null;
+            }
+        }
+    }
+</script>
+
+
 
 </html>
