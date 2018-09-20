@@ -5,3 +5,117 @@ categories:
 tags:
   - Spring家族
 ---
+
+# 架构射界
+## servlet开发存在的问题
+映射问题、参数获取问题、格式化转换问题、返回值处理问题、视图渲染问题
+## SpringMVC为解决上述问题开发的几大组件及接口
+HandlerMapping、HandlerAdapter、HandlerMethodArgumentResolver、HttpMessageConverter、Converter、GenericConverter、HandlerMethodReturnValueHandler、ViewResolver、MultipartResolver
+## DispatcherServlet、容器、组件三者之间的关系
+## 叙述SpringMVC对请求的整体处理流程
+
+## SpringBoot
+
+请参考[SpringBoot学习历程](www.baidu.com)
+
+# SpringAOP
+## AOP的实现分类
+编译期、字节码加载前、字节码加载后三种时机来实现AOP
+## 深刻理解其中的角色
+AOP联盟、aspectj、jboss AOP、Spring自身实现的AOP、Spring嵌入aspectj。特别是能用代码区分后两者
+
+## 接口设计：
+AOP联盟定义的概念或接口：Pointcut（概念，没有定义对应的接口）、Joinpoint、Advice、MethodInterceptor、MethodInvocation
+
+SpringAOP针对上述Advice接口定义的接口及其实现类：BeforeAdvice、AfterAdvice、MethodBeforeAdvice、AfterReturningAdvice；针对aspectj对上述接口的实现AspectJMethodBeforeAdvice、AspectJAfterReturningAdvice、AspectJAfterThrowingAdvice、AspectJAfterAdvice。
+
+SpringAOP定义的定义的AdvisorAdapter接口：将上述Advise转化为MethodInterceptor
+
+SpringAOP定义的Pointcut接口：含有两个属性ClassFilter（过滤类）、MethodMatcher（过滤方法）
+
+SpringAOP定义的ExpressionPointcut接口：实现中会引入aspectj的pointcut表达式
+
+SpringAOP定义的PointcutAdvisor接口（将上述Advice接口和Pointcut接口结合起来）
+
+## SpringAOP的调用流程
+
+## SpringAOP自己的实现方式（代表人物ProxyFactoryBean）和借助aspectj实现方式区分
+
+
+
+
+# Spring事务体系源码以及分布式事务Jotm Atomikos源码实现
+## jdbc事务存在的问题
+## Hibernate对事务的改进
+## 针对各种各样的事务，Spring如何定义事务体系的接口，以及如何融合jdbc事务和Hibernate事务的
+## 三种事务模型包含的角色以及各自的职责
+## 事务代码也业务代码分离的实现（AOP+ThreadLocal来实现）
+## pring事务拦截器TransactionInterceptor全景
+## X/Open DTP模型，两阶段提交，JTA接口定义
+## Jotm、Atomikos的实现原理
+## 事务的传播属性
+## PROPAGATION_REQUIRES_NEW、PROPAGATION_NESTED的实现原理以及区别
+## 事物的挂起和恢复的原理
+
+
+# 数据库隔离级别
+## Read uncommitted：读未提交
+## Read committed ： 读已提交
+## Repeatable read：可重复读
+## Serializable ：串行化
+
+
+# 数据库
+## 数据库性能的优化
+
+## 深入理解mysql的Record Locks、Gap Locks、Next-Key Locks
+例如下面的在什么情况下会出现死锁：
+start transaction; DELETE FROM t WHERE id =6; INSERT INTO t VALUES(6); commit;
+
+## insert into select语句的加锁情况
+
+## 事务的ACID特性概念
+
+## innodb的MVCC理解
+
+## undo redo binlog
+  1 undo redo 都可以实现持久化，他们的流程是什么？为什么选用redo来做持久化？
+  2 undo、redo结合起来实现原子性和持久化，为什么undo log要先于redo log持久化？
+  3 undo为什么要依赖redo？
+  4 日志内容可以是物理日志，也可以是逻辑日志？他们各自的优点和缺点是？
+  5 redo log最终采用的是物理日志加逻辑日志，物理到page，page内逻辑。还存在什么问题？怎么解决？Double Write
+  6 undo log为什么不采用物理日志而采用逻辑日志？
+  7 为什么要引入Checkpoint？
+  8 引入Checkpoint后为了保证一致性需要阻塞用户操作一段时间，怎么解决这个问题？（这个问题还是很有普遍性的，redis、ZooKeeper都有类似的情况以及不同的应对策略）又有了同步Checkpoint和异步Checkpoint
+  9 开启binlog的情况下，事务内部2PC的一般过程（含有2次持久化，redo log和binlog的持久化）
+  10 解释上述过程，为什么binlog的持久化要在redo log之后，在存储引擎commit之前？
+  11 为什么要保持事务之间写入binlog和执行存储引擎commit操作的顺序性？（即先写入binlog日志的事务一定先commit）
+  12 为了保证上述顺序性，之前的办法是加锁prepare_commit_mutex，但是这极大的降低了事务的效率，怎么来实现binlog的group commit？
+  13 怎么将redo log的持久化也实现group commit？至此事务内部2PC的过程，2次持久化的操作都可以group commit了，极大提高了效率
+
+# ORM框架: mybatis、Hibernate
+演进之路
+## jdbc
+## Spring的JdbcTemplate
+## hibernate
+## JPA
+## SpringDataJPA
+
+# 安全
+## Session和Cookie的区别和联系以及Session的实现原理
+## SpringSecurity的认证过程以及与Session的关系
+## CAS实现SSO
+[CAS](http://elim.iteye.com/blog/2128728)
+
+
+# 日志
+# jdk自带的logging、log4j、log4j2、logback
+# 门面commons-logging、slf4j
+# 上述6种混战时的日志转换
+
+# datasource
+## c3p0
+## druid
+## JdbcTemplate执行sql语句的过程中对Connection的使用和管理
+
+# HTTPS的实现原理

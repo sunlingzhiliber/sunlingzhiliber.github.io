@@ -1,37 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>汤包</title>
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
         body {
             -webkit-font-smoothing: antialiased;
             font-family: Helvetica Neue, Helvetica, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-            background-image: url('bg.jpg');
+            background: url('assets/tangbao/bg1.jpg') repeat;
             font-size: 85%;
             margin: 0;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            background-size: 100% auto;
+            overflow: hidden;
         }
+
+
+        .contentDate {
+            position: absolute;
+            width: 100%;
+            top: 15%;
+            left: 35%;
+            transform: translate(0, -50%);
+            text-align: center;
+        }
+
+
 
         h2 {
             font-size: 220%;
             font-weight: 400;
-        }
-
-        .content {
-            position: absolute;
-            width: 100%;
-            top: 40%;
-            transform: translate(0, -50%);
-            text-align: center;
         }
 
         .timer {
@@ -45,134 +54,177 @@
         }
 
 
-        #perspective {
-            perspective: 800px;
-            /*景深*/
+
+
+
+
+
+
+
+        a {
+            color: #ffffff;
         }
 
-        #wrap {
-            position: relative;
-            width: 150px;
-            height: 178px;
-            margin: 200px auto;
-            transform-style: preserve-3d;
-            /*构建3d场景*/
-            transform: rotateX(-20deg) rotateY(0deg);
+
+
+
+
+        .element {
+            width: 120px;
+            height: 160px;
+            box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+            border: 1px solid rgba(127, 255, 255, 0.25);
+            text-align: center;
+            cursor: default;
         }
 
-        #wrap .image-block {
+        img {
+            z-index: 99;
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.66;
+        }
+
+
+        img:hover {
+            transition: all 0.3s ease;
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(3);
+
+        }
+
+        .element:hover {
+            box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
+            border: 1px solid rgba(127, 255, 255, 0.75);
+        }
+
+        .element .number {
             position: absolute;
-            transform: rotateY(0deg);
-            /*transition: 1s;值的改变有一个过渡的过程*/
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: rgba(127, 255, 255, 0.75);
         }
 
-        #wrap .image-block img {
-            width: 150px;
-            height: 178px;
-        }
-
-        .pic {
-            border: 2px solid #fff;
-            padding: 5px;
-            -moz-box-shadow: 0px 0px 8px 2px #fdfdfd;
-            /*firefox*/
-            -webkit-box-shadow: 0px 0px 8px 2px #fdfdfd;
-            /*webkit*/
-            box-shadow: 0px 0px 8px 2px #fdfdfd;
-            /*opera或ie9*/
-        }
-
-        /*倒影效果 s*/
-        .reflection {
-            position: relative;
-            padding-left: 8px;
-        }
-
-        .reflection img {
-            -webkit-transform: scaleY(-1);
-            -moz-transform: scaleY(-1);
-            -ms-transform: scaleY(-1);
-            -o-transform: scaleY(-1);
-            transform: scaleY(-1);
-            filter: flipv;
-            opacity: 0.50;
-            filter: alpha(opacity='50');
-        }
-
-        .reflection .overlay {
+        .element .symbol {
             position: absolute;
-            top: 0px;
-            left: 8px;
-            width: 150px;
-            height: 178px;
-            background-image: -moz-linear-gradient(center bottom, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0) 75%);
-            background-image: -o-linear-gradient(rgba(0, 0, 0, 0) 25%, rgb(0, 0, 0) 40%);
-            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.60, rgb(0, 0, 0)), color-stop(0.75, rgba(0, 0, 0, 0)));
-            filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColor=0, EndColorStr=#000000);
+            top: 40px;
+            left: 0px;
+            right: 0px;
+            font-size: 60px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+        }
+
+        .element .number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: rgba(127, 255, 255, 0.75);
+        }
+
+
+
+        .element .details {
+            position: absolute;
+            bottom: 15px;
+            left: 0px;
+            right: 0px;
+            font-size: 12px;
+            color: rgba(127, 255, 255, 0.75);
+        }
+
+
+        #menu {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-family: verdana, Tahoma, Arial, Hei, "Microsoft Yahei", SimHei;
+        }
+
+
+        button {
+            float: left;
+            color: rgba(4, 4, 4, 0.75);
+            outline: 1px solid rgba(32, 33, 33, 0.75);
+            border: 0px;
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgba(152, 110, 151, 0.5);
+        }
+
+        button:active {
+            color: #000000;
+            background-color: rgba(0, 255, 255, 0.75);
         }
     </style>
 </head>
 
 <body>
-    <div class="content">
-        <h2>汤包，我们已经在一起了</h2>
-        <div class="timer">
-            <b id="d"></b> Days
-            <b id="h"></b> Hours
-            <b id="m"></b> Minutes
-            <b id="s"></b> Seconds
+    <div id="main">
+
+
+        <div class="contentDate">
+            <h2>汤包，我们已经在一起了</h2>
+            <div class="timer">
+                <b id="d"></b> Days
+                <b id="h"></b> Hours
+                <b id="m"></b> Minutes
+                <b id="s"></b> Seconds
+            </div>
         </div>
-    </div>
-    <div id="perspective">
-        <div id="wrap">
-    
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/1.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/1.jpg" />
-                    <div class="overlay"></div>
-                </div>
+
+
+
+
+
+        <div>
+            <div id="container"></div>
+            <div id="menu">
+                <button id="table">L</button>
+                <button id="sphere">O</button>
+                <button id="helix">V</button>
+                <button id="grid">E</button>
             </div>
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/2.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/2.jpg" />
-                    <div class="overlay"></div>
-                </div>
-            </div>
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/3.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/3.jpg" />
-                    <div class="overlay"></div>
-                </div>
-            </div>
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/4.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/4.jpg" />
-                    <div class="overlay"></div>
-                </div>
-            </div>
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/5.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/5.jpg" />
-                    <div class="overlay"></div>
-                </div>
-            </div>
-            <div class="image-block">
-                <img class="pic" src="assets/tangbao/6.jpg" />
-                <div class="reflection">
-                    <img src="assets/tangbao/6.jpg" />
-                    <div class="overlay"></div>
-                </div>
-            </div>
-         
+
         </div>
+
+
+
+
+
+
+
     </div>
 
+
+
 </body>
+<script src="assets/tangbao/js/three.min.js"></script>
+<script src="assets/tangbao/js/tween.min.js"></script>
+<script src="assets/tangbao/js/TrackballControls.js"></script>
+<script src="assets/tangbao/js/FirstPersonControls.js"></script>
+<script src="assets/tangbao/js/CSS3DRenderer.js"></script>
+
+<script>
+
+    var contentElem = document.getElementById('content');
+
+    document.getElementById('left').addEventListener('click', function () {
+        contentElem.classList.remove('right');
+    });
+
+    document.getElementById('right').addEventListener('click', function () {
+        contentElem.classList.add('right');
+    });
+</script>
 
 <script>
     function timer() {
@@ -199,63 +251,379 @@
     setInterval(timer, 1000);
 </script>
 
-
 <script>
-    /*功能一：
-        所有的图片撑开成一个圆
-        1.所有图片旋转一定的度数
-        0*deg   1*deg   2*deg
-        2.便利所有图片，并动态绑定一个度数值
-      功能二：
-        拖拽
-        1.按下  移动  松开
-        相册移动的位置  鼠标移动的位置
-        相册移动的距离：
-        坐标差 = 现在的坐标 - 以前的坐标
-        算出相册的总度数  累加上差值
-     */
-    window.onload = function () { //页面加载完毕再执行
-        var oImg = document.getElementsByClassName('image-block');
-        var deg = 360 / 6; //旋转的单位度数
-        var nowX, nowY, lastX, lastY, minsX, minsY, roX = -20, roY = 0;
-        Array.prototype.forEach.call(oImg, function (el, index) {
-            el.style.transform = 'rotateY(' + index * deg + 'deg) translateZ(400px)';
-            el.style.transition = '1s ' + (12 - index) * 0.05 + 's';
-        });
 
-        document.onmousedown = function (e) {
-            //            点击
-            var e = e || window.event;
-            /*兼容IE 与 火狐*/
-            lastX = e.clientX;
-            lastY = e.clientY;
-            this.onmousemove = function (e) {
-                //               移动
-                var e = e || window.event;
-                //                现在的值
-                nowX = e.clientX;
-                nowY = e.clientY;
-                //                即将要做的事情
-                //                坐标差
-                minsX = nowX - lastX;
-                minsY = nowY - lastY;
-                //                旋转的总度数的值
-                roX -= minsY * 0.2;
-                roY += minsX * 0.2;
-                //id获取的元素可以直接通过元素Id去获取  可以不需要通过document.getElementById();
-                wrap.style.transform = 'rotateX(' + roX + 'deg) rotateY(' + roY + 'deg)'
-                //                用完的值
-                lastX = nowX;
-                lastY = nowY;
+    var table = [
+
+        ['我相信', '', 5, 1, 'assets/tangbao/1.jpg'],
+        ['月亮', '', 6, 1, 'assets/tangbao/2.jpg'],
+        ['是', '', 7, 1, 'assets/tangbao/3.jpg'],
+        ['深爱着', '', 8, 1, 'assets/tangbao/4.jpg'],
+
+        ['太阳的了', '', 10, 2, 'assets/tangbao/5.jpg'],
+
+        ['像我', '', 12, 1, 'assets/tangbao/6.jpg'],
+        ['深爱着你', '', 13, 1, 'assets/tangbao/7.jpg'],
+        ['一天的', '', 14, 1, 'assets/tangbao/8.jpg'],
+        ['交辉', '', 15, 1, 'assets/tangbao/9.jpg'],
+
+        ['只有', '', 16, 2, 'assets/tangbao/10.jpg'],
+        ['拂晓', '', 17, 3, 'assets/tangbao/11.jpg'],
+        ['与', '', 17, 4, 'assets/tangbao/12.jpg'],
+        ['傍晚', '', 16, 5, 'assets/tangbao/13.jpg'],
+        ['但', '', 15, 6, 'assets/tangbao/14.jpg'],
+        ['我想', '', 14, 7, 'assets/tangbao/15.jpg'],
+        ['这是', '', 13, 8, 'assets/tangbao/16.jpg'],
+        ['够', '', 12, 9, 'assets/tangbao/17.jpg'],
+        ['的', '', 11, 10, 'assets/tangbao/18.jpg'],
+
+        ['', '', 10, 11, ''],
+        ['', '', 9, 10, ''],
+        ['', '', 8, 9, ''],
+        ['', '', 7, 8, ''],
+        ['', '', 6, 7, ''],
+        ['', '', 5, 6, ''],
+
+        ['', '', 4, 5, ''],
+        ['', '', 3, 4, ''],
+        ['', '', 3, 3, ''],
+        ['', '', 4, 2, ''],
+
+
+        // 中间填充
+        ['', '', 5, 2, ''],
+        ['', '', 6, 2, ''],
+        ['', '', 7, 2, ''],
+        ['', '', 8, 2, ''],
+        ['', '', 9, 2, ''],
+        ['', '', 11, 2, ''],
+        ['', '', 12, 2, ''],
+        ['', '', 13, 2, ''],
+        ['', '', 14, 2, ''],
+        ['', '', 15, 2, ''],
+
+        ['', '', 4, 3, ''],
+        ['', '', 5, 3, ''],
+        ['', '', 6, 3, ''],
+        ['', '', 7, 3, ''],
+        ['', '', 8, 3, ''],
+        ['', '', 9, 3, ''],
+        ['', '', 10, 3, ''],
+        ['', '', 11, 3, ''],
+        ['', '', 12, 3, ''],
+        ['', '', 13, 3, ''],
+        ['', '', 14, 3, ''],
+        ['', '', 15, 3, ''],
+        ['', '', 16, 3, ''],
+
+        ['', '', 4, 4, ''],
+        ['', '', 5, 4, ''],
+        ['', '', 6, 4, ''],
+        ['', '', 7, 4, ''],
+        ['', '', 8, 4, ''],
+        ['', '', 9, 4, ''],
+        ['', '', 10, 4, ''],
+        ['', '', 11, 4, ''],
+        ['', '', 12, 4, ''],
+        ['', '', 13, 4, ''],
+        ['', '', 14, 4, ''],
+        ['', '', 15, 4, ''],
+        ['', '', 16, 4, ''],
+
+        ['', '', 5, 5, ''],
+        ['', '', 6, 5, ''],
+        ['', '', 7, 5, ''],
+        ['', '', 8, 5, ''],
+        ['', '', 9, 5, ''],
+        ['', '', 10, 5, ''],
+        ['', '', 11, 5, ''],
+        ['', '', 12, 5, ''],
+        ['', '', 13, 5, ''],
+        ['', '', 14, 5, ''],
+        ['', '', 15, 5, ''],
+
+        ['', '', 6, 6, ''],
+        ['', '', 7, 6, ''],
+        ['', '', 8, 6, ''],
+        ['', '', 9, 6, ''],
+        ['', '', 10, 6, ''],
+        ['', '', 11, 6, ''],
+        ['', '', 12, 6, ''],
+        ['', '', 13, 6, ''],
+        ['', '', 14, 6, ''],
+
+        ['', '', 7, 7, ''],
+        ['', '', 8, 7, ''],
+        ['', '', 9, 7, ''],
+        ['', '', 10, 7, ''],
+        ['', '', 11, 7, ''],
+        ['', '', 12, 7, ''],
+        ['', '', 13, 7, ''],
+
+        ['', '', 8, 8, ''],
+        ['', '', 9, 8, ''],
+        ['', '', 10, 8, ''],
+        ['', '', 11, 8, ''],
+        ['', '', 12, 8, ''],
+
+        ['', '', 9, 9, ''],
+        ['', '', 10, 9, ''],
+        ['', '', 11, 9, ''],
+
+        ['', '', 10, 10, ''],
+
+
+    ];
+
+    var camera, scene, renderer;
+    var controls;
+
+    var objects = [];
+    var targets = { table: [], sphere: [], helix: [], grid: [] };
+
+    init();
+    animate();
+
+    function init() {
+        camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 3000;
+
+        scene = new THREE.Scene();
+
+        // table
+
+        for (var i = 0; i < table.length; i++) {
+
+            var data = table[i];
+            // 构建元素
+            var element = document.createElement('div');
+            element.className = 'element';
+            element.style.backgroundColor = 'rgba(64,187,225,' + (Math.random() * 0.5 + 0.25) + ')';
+
+
+            var number = document.createElement('div');
+            number.className = 'number';
+            number.textContent = 'love';
+            element.appendChild(number);
+
+
+
+
+            var details = document.createElement('div');
+            details.className = 'details';
+            details.innerHTML = data[0] + '<br>' + data[1];
+            element.appendChild(details);
+
+
+            var img = document.createElement('img');
+            if (data[4] !== '') {
+                img.src = data[4]
+                img.style.width = '120px'
+                img.style.height = '160px'
+                element.appendChild(img);
+            } else {
+                var symbol = document.createElement('div');
+                symbol.className = 'symbol';
+                symbol.textContent = i + 1;
+                element.appendChild(symbol);
             }
-            this.onmouseup = function (e) {
-                this.onmousemove = null;
-                this.onmouseup = null;
-            }
+
+
+
+
+
+
+
+
+
+
+
+
+            var object = new THREE.CSS3DObject(element);
+            object.position.x = Math.random() * 4000 - 2000;
+            object.position.y = Math.random() * 4000 - 2000;
+            object.position.z = Math.random() * 4000 - 2000;
+            scene.add(object);
+
+            objects.push(object);
+
+            //
+
+            var object = new THREE.Object3D();
+            object.position.x = (data[2] * 140) - 1330;
+            object.position.y = - (data[3] * 180) + 990;
+
+            targets.table.push(object);
+
         }
+
+        // sphere
+
+        var vector = new THREE.Vector3();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+
+            var phi = Math.acos(-1 + (2 * i) / l);
+            var theta = Math.sqrt(l * Math.PI) * phi;
+
+            var object = new THREE.Object3D();
+
+            object.position.x = 800 * Math.cos(theta) * Math.sin(phi);
+            object.position.y = 800 * Math.sin(theta) * Math.sin(phi);
+            object.position.z = 800 * Math.cos(phi);
+
+            vector.copy(object.position).multiplyScalar(2);
+
+            object.lookAt(vector);
+
+            targets.sphere.push(object);
+
+        }
+
+        // helix
+
+        var vector = new THREE.Vector3();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+
+            var phi = i * 0.175 + Math.PI;
+
+            var object = new THREE.Object3D();
+
+            object.position.x = 900 * Math.sin(phi);
+            object.position.y = - (i * 8) + 450;
+            object.position.z = 900 * Math.cos(phi);
+
+            vector.x = object.position.x * 2;
+            vector.y = object.position.y;
+            vector.z = object.position.z * 2;
+
+            object.lookAt(vector);
+
+            targets.helix.push(object);
+
+        }
+
+        // grid
+
+        for (var i = 0; i < objects.length; i++) {
+
+            var object = new THREE.Object3D();
+
+            object.position.x = ((i % 5) * 400) - 800;
+            object.position.y = (- (Math.floor(i / 5) % 5) * 400) + 800;
+            object.position.z = (Math.floor(i / 25)) * 1000 - 2000;
+
+            targets.grid.push(object);
+
+        }
+
+        //
+
+        renderer = new THREE.CSS3DRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = 'absolute';
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        //
+
+        controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+        controls.rotateSpeed = 0.5;
+        controls.minDistance = 500;
+        controls.maxDistance = 6000;
+
+
+
+        controls.addEventListener('change', render);
+
+        var button = document.getElementById('table');
+        button.addEventListener('click', function (event) {
+
+            transform(targets.table, 2000);
+
+        }, false);
+
+        var button = document.getElementById('sphere');
+        button.addEventListener('click', function (event) {
+
+            transform(targets.sphere, 2000);
+
+        }, false);
+
+        var button = document.getElementById('helix');
+        button.addEventListener('click', function (event) {
+            transform(targets.helix, 2000);
+        }, false);
+
+        var button = document.getElementById('grid');
+        button.addEventListener('click', function (event) {
+            transform(targets.grid, 2000);
+        }, false);
+
+        transform(targets.table, 5000);
+
+        //
+
+        window.addEventListener('resize', onWindowResize, false);
+
     }
+
+    function transform(targets, duration) {
+
+        TWEEN.removeAll();
+
+        for (var i = 0; i < objects.length; i++) {
+
+            var object = objects[i];
+            var target = targets[i];
+
+            new TWEEN.Tween(object.position)
+                .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+
+            new TWEEN.Tween(object.rotation)
+                .to({ x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+
+        }
+
+        new TWEEN.Tween(this)
+            .to({}, duration * 2)
+            .onUpdate(render)
+            .start();
+
+    }
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        render();
+
+    }
+
+    function animate() {
+
+        requestAnimationFrame(animate);
+
+        TWEEN.update();
+
+        controls.update();
+
+    }
+
+    function render() {
+
+        renderer.render(scene, camera);
+
+    }
+
 </script>
-
-
 
 </html>
