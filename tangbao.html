@@ -15,14 +15,12 @@
         body {
             -webkit-font-smoothing: antialiased;
             font-family: Helvetica Neue, Helvetica, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-            background: url('assets/tangbao/bg1.jpg') repeat;
             font-size: 85%;
             margin: 0;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            background-size: 100% auto;
             overflow: hidden;
         }
 
@@ -53,20 +51,9 @@
             color: rgb(253, 99, 125);
         }
 
-
-
-
-
-
-
-
-
         a {
             color: #ffffff;
         }
-
-
-
 
 
         .element {
@@ -165,6 +152,7 @@
             background-color: rgba(0, 255, 255, 0.75);
         }
     </style>
+
 </head>
 
 <body>
@@ -207,10 +195,18 @@
 
 
 </body>
+<script>
+
+    var day=new Date();
+    var x = document.getElementsByTagName('body')[0];
+    x.style.background='url("assets/tangbao/bg'+day.getDay()+'.jpg") repeat';
+    x.style.backgroundSize='100% auto';
+
+
+</script>
 <script src="assets/tangbao/js/three.min.js"></script>
 <script src="assets/tangbao/js/tween.min.js"></script>
 <script src="assets/tangbao/js/TrackballControls.js"></script>
-<script src="assets/tangbao/js/FirstPersonControls.js"></script>
 <script src="assets/tangbao/js/CSS3DRenderer.js"></script>
 
 <script>
