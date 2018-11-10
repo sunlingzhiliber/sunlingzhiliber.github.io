@@ -19,27 +19,28 @@ const color1 = {
   };
   const points1 = [];
   const points2 = [];
-  const Actions = [{
-      lifeTime: 60,
-      texts: [{
-        text: '3',
-        hsla: color1
-      }]
-    },
-    {
-      lifeTime: 60,
-      texts: [{
-        text: '2',
-        hsla: color1
-      }]
-    },
-    {
-      lifeTime: 60,
-      texts: [{
-        text: '1',
-        hsla: color1
-      }]
-    },
+  const Actions = [
+    // {
+    //   lifeTime: 60,
+    //   texts: [{
+    //     text: '3',
+    //     hsla: color1
+    //   }]
+    // },
+    // {
+    //   lifeTime: 60,
+    //   texts: [{
+    //     text: '2',
+    //     hsla: color1
+    //   }]
+    // },
+    // {
+    //   lifeTime: 60,
+    //   texts: [{
+    //     text: '1',
+    //     hsla: color1
+    //   }]
+    // },
     {
       lifeTime: 90,
       func: (width, height) => {
