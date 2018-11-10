@@ -1,0 +1,283 @@
+<html>
+
+<head>
+    <title>一百天纪念日</title>
+    <script src="./js/rough.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate.css" />
+</head>
+
+<body>
+
+
+    <audio id="audio" src="./gbqq.mp3"></audio>
+    <div id="app">
+
+        <div :class="'envelope animated '+state.Class">
+            <img @click="setState" class="heart" :src="iconUrl">
+            <div class="triangle-up"></div>
+            <div class="text">你收到一封信，点击查收！</div>
+        </div>
+
+
+        <my-main :show="state.show"></my-main>
+
+
+
+
+    </div>
+
+
+    <template id="myMain">
+        <div class="App animated bounceInLeft" v-if="show">
+            <div class="date">
+                <p>我们已经一起走过了: <span class="date-text">{{date.day}}</span> 天
+                </p>
+            </div>
+            <div id="autotype">
+                <h1 style="font-weight: 900">哈喽！wuli趴布猪！</h1>
+                <p>在煽情开始之前，先放首歌当背景音乐吧！Music!</p>
+                <p>今天是我们两周年的纪念日，从2016年4月23日到现在，我们一起经历了许许多多的事情，
+                    有欢笑也有争吵，也曾因为一些事情闹过分手，但是我们都走过来了。</p>
+                <div style="text-align: right">
+                    <p>爱你的♥魏锐</p>
+                    <p>2018年4月23日</p>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+
+
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+
+    <script>
+        const extend = (base, ...extensions) => Object.assign({}, base, ...extensions)
+        const parseColor = ({
+            h,
+            s,
+            l,
+            a
+        }) => `hsla(${h},${s}%,${l}%,${a})`
+        const Color = extend.bind(null, {
+            h: 0,
+            s: 100,
+            l: 100,
+            a: 1
+        })
+        const Vector = extend.bind(null, {
+            x: 0,
+            y: 0
+        })
+        const Particle = extend.bind(null, {
+            pos: Vector(),
+            vel: Vector(),
+            angle: 0,
+            speed: 0,
+            radius: 0,
+            rotation: 0,
+            color: Color()
+        })
+        const colors = [
+            Color({
+                h: 20,
+                s: 100,
+                l: 50
+            }),
+            Color({
+                h: 200,
+                l: 50
+            }),
+            Color({
+                h: 300,
+                l: 50
+            }),
+            Color({
+                h: 100,
+                l: 40
+            }),
+        ]
+        const animationLoop = scope => {
+            if (scope.animation) {
+                scope.animation(animationLoop.bind(null, scope))
+            }
+            const {
+                ctx
+            } = scope
+            const {
+                canvas
+            } = ctx
+            const rc = rough.canvas(canvas)
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            scope.particles.map((p, i) => {
+                p.pos.y -= p.speed
+                if (i % 2) {
+                    p.pos.x = p.pos.x + Math.sin(p.angle) * .2
+                } else {
+                    p.pos.x = p.pos.x - Math.cos(p.angle) * .2
+                }
+                p.angle += .01
+                rc.circle(p.pos.x, p.pos.y, p.radius, {
+                    fill: parseColor(p.color),
+                    roughness: Math.random() * 1.5,
+                    hachureGap: p.hachureGap,
+                    hachureAngle: p.hachureAngle
+                })
+                rc.line(p.pos.x, p.pos.y + p.radius * 1.2, p.pos.x, p.pos.y + p.radius / 2, {
+                    bowing: Math.random() * 3
+                })
+                if (p.pos.y + p.radius * 3 < 0) {
+                    p.pos.y = canvas.height + p.radius * 3
+                    p.pos.x = Math.random() * (canvas.width - p.radius)
+                }
+            })
+        }
+        const scope = {
+            animation: requestAnimationFrame.bind(null),
+            ctx: document.createElement('canvas').getContext('2d'),
+            rotation: 0,
+            particles: []
+        };
+        ~(scope => {
+            const {
+                ctx: {
+                    canvas
+                }
+            } = scope
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            document.body.appendChild(canvas)
+            let particleCount = 60
+            while (particleCount--) {
+                scope.particles.push(Particle({
+                    pos: {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height
+                    },
+                    speed: Math.random() + .2,
+                    radius: Math.random() * 60 + 20,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    hachureAngle: Math.random() * 90,
+                    hachureGap: Math.random() * 8
+                }))
+            }
+            animationLoop(scope)
+        })(scope)
+    </script>
+
+    <script>
+        var myMain = Vue.extend({
+            template: '#myMain',
+            props: ["show"],
+            data() {
+                return {
+                    date: {},
+                }
+            },
+            watch: {
+                show: {
+                    handler: function (val, oldval) {
+                        if (val != oldval) {
+                            this.$nextTick(() => {
+                                this.print();
+                            })
+                        }
+                    }
+                }
+            },
+            methods: {
+                setTime(year, month, day) {
+                    var dateNow = new Date();
+                    var dateJNR = new Date(year, month - 1, day);
+                    // var anniversary = parseInt((dateNow - dateJNR) / (365*24*3600*1000))
+                    var d = parseInt((dateNow - dateJNR) / (24 * 3600 * 1000));
+                    this.date = {
+                        day: d
+                    }
+                },
+                print() {
+                    $.fn.autotype = () => {
+                        var _this = $(this.$el.children[1]);
+                        var str = _this.html();
+                        // 正则替换代码行之间添加的多个空格，不去除换行输出会有明显的停顿：实际是在输出多个空格
+                        str = str.replace(/(\s){2,}/g, "$1");
+                        var index = 0;
+                        $(this).html('');
+                        var timer = function fn() {
+                            var args = arguments;
+                            var current = str.slice(index, index + 1);
+                            // html标签完整输出,如：<p>
+                            if (current == '<') {
+                                index = str.indexOf('>', index) + 1;
+                            } else {
+                                index++;
+                            }
+                            //位运算符: 根据setInterval运行奇偶次来判断是否加入下划线字符“_”，使输入效果更逼真
+                            if (index < str.length - 1) { //打印字符倒数第2个字符开始，不加下划线字符，以防止结束符可能会多输出一下划线字符
+                                _this.html(str.substring(0, index) + (index & 1 ? '_' : ''));
+                            } else {
+                                _this.html(str.substring(0, index));
+                                clearTimeout(timer);
+                            };
+                            setTimeout(fn, 200)
+                        };
+                        // 延迟1s开始
+                        setTimeout(timer, 1000);
+                    };
+                    $("#autotype").autotype();
+                }
+            },
+            created() {
+                this.setTime(2018, 9, 1)
+
+            }
+        });
+
+
+
+        var vue = new Vue({
+            el: "#app",
+            components: {
+                'my-main': myMain
+            },
+            data() {
+                return {
+                    state: {
+                        show: false,
+                        Class: 'bounceInLeft',
+                    },
+                    iconUrl: "./爱心.png",
+                }
+            },
+            watch: {},
+            methods: {
+                setState() {
+                    this.state = {
+                        Class: "bounceOutRight",
+                        show: true
+                    }
+                    var audio = document.getElementById("audio");
+                    setTimeout(() => audio.play(), 1000)
+                },
+            },
+            created() {
+
+            }
+        })
+    </script>
+
+</body>
+
+</html>

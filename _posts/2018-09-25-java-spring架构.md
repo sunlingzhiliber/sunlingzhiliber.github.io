@@ -10,8 +10,49 @@ tags:
     - SpringMVC
 ---
 
-# Spring的设计理念与设计模式分析
+Spring 是块 :meat_on_bone:。
 
+# Spring的设计理念
+
+Spring的核心就是Core、Context和Beans，它们构建了整个Spring的骨架结构，没有它们就不存在AOP、Web等上层的特性功能。
+Spring可以认为是一种BOP(Bean Oriented Programming),Spring解决了一个关键的问题，就是
+它让 `对象之间的依赖关系转用配置文件(注解)来进行管理`，也就是他的依赖注入机制。而这个注入关系在一个叫 Ioc 容器中管理，那 Ioc 容器就是被 Bean 包裹的对象。Spring 正是通过把对象包装在 Bean 中而达到对这些对象的管理以及一些列额外操作的目的。
+
+## IOC
+
+IOC就是控制反转，利用JAVA的反射机制，将实例的初始化交给Spring容器来完成。Spring可以通过配置文件来管理实例，当然目前配置文件的方式慢慢被注解的方式就行了取代。
+
+## IOC 和工厂模式的区别
+
+工厂模式也可以完成对象实例的创建，那么为什么我们一定要使用Spring的IOC呢？
+工厂模式，在需求变化的时候，需要对工厂进行代码层次上的改变， 而IOC是利用反射实现的，允许我们不重新编译代码，因为它的对象都是动态生成的。
+
+# MVC模式
+
+MVC的原理图如下
+![MVC模式原理图](https://raw.githubusercontent.com/sunlingzhiliber/imgstore/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181016211718.jpg)
+
+## SpringMVC
+
+SpringMVC 框架是以请求为驱动，围绕 Servlet 设计，将请求发给控制器，然后通过模型对象，分派器来展示请求结果视图。其中核心类是 DispatcherServlet，它是一个 Servlet，顶层是实现的Servlet接口。
+
+## 工作原理
+
+- （1）客户端（浏览器）发送请求，直接请求到 DispatcherServlet。
+
+- （2）DispatcherServlet 根据请求信息调用 HandlerMapping，解析请求对应的 Handler。
+
+- （3）解析到对应的 Handler（也就是我们平常说的 Controller 控制器）后，开始由 HandlerAdapter 适配器处理。`工程师开发`
+
+- （4）HandlerAdapter 会根据 Handler 来调用真正的处理器开处理请求，并处理相应的业务逻辑。
+
+- （5）处理器处理完业务后，会返回一个 ModelAndView 对象，Model 是返回的数据对象，View 是个逻辑上的 View。`工程师开发`
+
+- （6）ViewResolver 会根据逻辑 View 查找实际的 View。
+
+- （7）DispaterServlet 把返回的 Model 传给 View（视图渲染）。
+
+- （8）把 View 返回给请求者（浏览器）
 
 # 架构
 ## servlet开发存在的问题
@@ -86,6 +127,7 @@ start transaction; DELETE FROM t WHERE id =6; INSERT INTO t VALUES(6); commit;
 ## innodb的MVCC理解
 
 ## undo redo binlog
+
   1 undo redo 都可以实现持久化，他们的流程是什么？为什么选用redo来做持久化？
   2 undo、redo结合起来实现原子性和持久化，为什么undo log要先于redo log持久化？
   3 undo为什么要依赖redo？

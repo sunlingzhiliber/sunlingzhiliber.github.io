@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: rgba(255, 247, 240, 1);
+        }
+
+        #mycanvas {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .particles {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+
+<body>
+    <canvas class="particles"></canvas>
+    <canvas id="mycanvas"></canvas>
+    <img id="tulip" src="./assets/heart.png" alt="heart">
+
+
+</body>
+<script>
+    let topCanvas, topWidth, topHeight, topCtx, particles;
+
+    function resizeCanvas() {
+        topCanvas = document.querySelector('.particles');
+        topWidth = topCanvas.clientWidth;
+        topHeight = topCanvas.clientHeight;
+        topCtx = topCanvas.getContext('2d');
+        const ratio = window.devicePixelRatio;
+        topCanvas.width = ratio * topWidth;
+        topCanvas.height = ratio * topHeight;
+        topCtx.scale(ratio, ratio);
+    }
+
+    function animate() {
+        topCtx.clearRect(0, 0, topWidth, topHeight);
+        for (let i in particles) {
+            particles[i].draw();
+        }
+        window.requestAnimationFrame(animate);
+    }
+
+    function loadTop() {
+
+        resizeCanvas();
+        particles = [];
+        for (var i = 0; i < topWidth; i += 1) {
+            var c = new Particles();
+            particles.push(c);
+        }
+        animate();
+    }
+
+    function resize() {
+        resizeCanvas();
+    }
+
+    class Particles {
+        constructor() {
+            this.init()
+        }
+        init() {
+            this.x = Math.random() * topWidth;
+            this.y = Math.random() * 10;
+            this.alpha = 0.1 + Math.random() * 0.3;
+            this.scale = 0.1 + Math.random() * 0.2;
+            this.hue = Math.random() * 360;
+            this.v = Math.random();
+            this.xv = Math.random();
+        }
+        draw() {
+            if (this.alpha <= 0) {
+                this.init();
+            }
+            this.y += this.v;
+            this.x += this.xv;
+            if (Math.random() < 0.01) {
+                this.xv = -this.xv
+            }
+            this.alpha -= (10 + Math.random() * 100) / 60000;
+            topCtx.beginPath();
+            topCtx.arc(this.x, this.y, this.scale * 10, 0, 2 * Math.PI, false);
+            topCtx.fillStyle = `hsla(${this.hue},100%,70%,${this.alpha})`;
+            topCtx.fill();
+        };
+    };
+
+    window.addEventListener('load', loadTop)
+    window.addEventListener('resize', resize)
+</script>
+<script src="./js/action.js"></script>
+<script src="./js/minify.js"></script>
+</html>
