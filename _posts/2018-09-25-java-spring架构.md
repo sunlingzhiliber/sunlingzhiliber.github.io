@@ -38,28 +38,174 @@ SpringMVC 框架是以请求为驱动，围绕 Servlet 设计，将请求发给�
 
 ## 工作原理
 
-- （1）客户端（浏览器）发送请求，直接请求到 DispatcherServlet。
+- （1）客户端（浏览器）发送请求，利用DispatcherServlet(extends HttpServlet)调用this.do直接请求到 DispatcherServlet，调用this.doDispatch(request,response)
 
-- （2）DispatcherServlet 根据请求信息调用 HandlerMapping，解析请求对应的 Handler。
+- （2）DispatcherServlet 根据请求信息 调用this.getHandler(请求) 根据this.handlerMapping，解析请求 获取请求对应的Handler。
 
-- （3）解析到对应的 Handler（也就是我们平常说的 Controller 控制器）后，开始由 HandlerAdapter 适配器处理。`工程师开发`
+- （3）解析到对应的 Handler（也就是我们平常说的 Controller 控制器）后，创建 HandlerAdapter 适配器。 在适配器工作之前，我们需要进行applyPreHandle, 对拦截器interceptors 进行处理。
 
-- （4）HandlerAdapter 会根据 Handler 来调用真正的处理器开处理请求，并处理相应的业务逻辑。
+- （4）HandlerAdapter 会根据 Handler 来调用真正的处理器来处理请求ha.handle()，处理相应的业务逻辑。通过反射invoke，获取returnValue。
 
-- （5）处理器处理完业务后，会返回一个 ModelAndView 对象，Model 是返回的数据对象，View 是个逻辑上的 View。`工程师开发`
+```java
+public Object invokeForRequest(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer, Object... providedArgs) throws Exception {
+        Object[] args = this.getMethodArgumentValues(request, mavContainer, providedArgs);
+        ......
+        Object returnValue = this.doInvoke(args);//Invoke方法就是我们写的@RestController中的方法 利用反射从handler中获取bean
+        ......
+        return returnValue;
+  }
+```
 
-- （6）ViewResolver 会根据逻辑 View 查找实际的 View。
+对参数进行处理的包括两个部分，创建和验证
 
-- （7）DispaterServlet 把返回的 Model 传给 View（视图渲染）。
+创建参数
+
+```java
+protected <T> Object readWithMessageConverters(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
+        boolean noContentType = false;
+
+        MediaType contentType;
+
+        ......获取contentType
+
+        Class<?> contextClass = parameter.getContainingClass();
+        Class<T> targetClass = targetType instanceof Class ? (Class)targetType : null;
+        if (targetClass == null) {
+            ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
+            targetClass = resolvableType.resolve();
+        }
+
+        HttpMethod httpMethod = inputMessage instanceof HttpRequest ? ((HttpRequest)inputMessage).getMethod() : null;
+        Object body = NO_VALUE;
+
+        AbstractMessageConverterMethodArgumentResolver.EmptyBodyCheckingHttpInputMessage message;
+        try {
+            label98: {
+                ......获取转换器
+                HttpMessageConverter converter;
+                Class converterType;
+
+                ......转换器对body进行处理
+            }
+        } catch (IOException var17) {
+            throw new HttpMessageNotReadableException("I/O error while reading input message", var17);
+        }
+
+        if (body != NO_VALUE) {
+            return body;
+        } else if (httpMethod != null && SUPPORTED_METHODS.contains(httpMethod) && (!noContentType || message.hasBody())) {
+            throw new HttpMediaTypeNotSupportedException(contentType, this.allSupportedMediaTypes);
+        } else {
+            return null;
+        }
+    }
+```
+
+在创建完参数后，需要进行validate
+
+```java
+protected void validateIfApplicable(WebDataBinder binder, MethodParameter parameter) {
+        Annotation[] annotations = parameter.getParameterAnnotations();
+        Annotation[] var4 = annotations;
+        int var5 = annotations.length;
+
+        for(int var6 = 0; var6 < var5; ++var6) {
+            Annotation ann = var4[var6];
+            Validated validatedAnn = (Validated)AnnotationUtils.getAnnotation(ann, Validated.class);
+            if (validatedAnn != null || ann.annotationType().getSimpleName().startsWith("Valid")) {
+                Object hints = validatedAnn != null ? validatedAnn.value() : AnnotationUtils.getValue(ann);
+                Object[] validationHints = hints instanceof Object[] ? (Object[])((Object[])hints) : new Object[]{hints};
+                binder.validate(validationHints);
+                break;
+            }
+        }
+
+    }
+```
+
+- （5） 获取returnValue后对其进行处理handleReturnValue，设置HTTP的输入，将retrunValue放置输出的Body之中.针对json的返回和ModelAndView的返回会有不同的方法
+
+RequestResponseBodyMethodProcessor
+
+```java
+    public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
+        mavContainer.setRequestHandled(true);
+        ServletServerHttpRequest inputMessage = this.createInputMessage(webRequest);//输入
+        ServletServerHttpResponse outputMessage = this.createOutputMessage(webRequest);//输出
+        this.writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
+    }
+```
+
+ModelAndViewMethodReturnValueHandler:
+
+```java
+    public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
+        if (returnValue == null) {
+            mavContainer.setRequestHandled(true);
+        } else {
+            ModelAndView mav = (ModelAndView)returnValue;
+            if (mav.isReference()) {
+                String viewName = mav.getViewName();
+                mavContainer.setViewName(viewName);
+                if (viewName != null && this.isRedirectViewName(viewName)) {
+                    mavContainer.setRedirectModelScenario(true);
+                }
+            } else {
+                View view = mav.getView();
+                mavContainer.setView(view);
+                if (view instanceof SmartView && ((SmartView)view).isRedirectView()) {
+                    mavContainer.setRedirectModelScenario(true);
+                }
+            }
+
+            mavContainer.setStatus(mav.getStatus());
+            mavContainer.addAllAttributes(mav.getModel());
+        }
+    }
+```
+
+- （6）处理器处理完业务后，会返回一个 ModelAndView 对象，Model 是返回的数据对象，View 是个逻辑上的 View。
+
+```java
+  private ModelAndView getModelAndView(ModelAndViewContainer mavContainer, ModelFactory modelFactory, NativeWebRequest webRequest) throws Exception {
+        modelFactory.updateModel(webRequest, mavContainer);
+        if (mavContainer.isRequestHandled()) {//已经处理了
+            return null;
+        } else {//未处理  会根据逻辑 View 查找实际的 View。
+            ModelMap model = mavContainer.getModel();
+            ModelAndView mav = new ModelAndView(mavContainer.getViewName(), model, mavContainer.getStatus());
+            if (!mavContainer.isViewReference()) {
+                mav.setView((View)mavContainer.getView());
+            }
+
+            if (model instanceof RedirectAttributes) {
+                Map<String, ?> flashAttributes = ((RedirectAttributes)model).getFlashAttributes();
+                HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest(HttpServletRequest.class);
+                if (request != null) {
+                    RequestContextUtils.getOutputFlashMap(request).putAll(flashAttributes);
+                }
+            }
+
+            return mav;
+        }
+```
+
+- （7）DispaterServlet 把返回的 Model 传给 View（视图渲染）。或者直接将json对象传递给浏览器
 
 - （8）把 View 返回给请求者（浏览器）
 
 # 架构
+
 ## servlet开发存在的问题
+
 映射问题、参数获取问题、格式化转换问题、返回值处理问题、视图渲染问题
+
 ## SpringMVC为解决上述问题开发的几大组件及接口
+
 HandlerMapping、HandlerAdapter、HandlerMethodArgumentResolver、HttpMessageConverter、Converter、GenericConverter、HandlerMethodReturnValueHandler、ViewResolver、MultipartResolver
+
 ## DispatcherServlet、容器、组件三者之间的关系
+
 ## 叙述SpringMVC对请求的整体处理流程
 
 ## SpringBoot
@@ -67,12 +213,17 @@ HandlerMapping、HandlerAdapter、HandlerMethodArgumentResolver、HttpMessageCon
 请参考[SpringBoot学习历程](www.baidu.com)
 
 # SpringAOP
+
 ## AOP的实现分类
+
 编译期、字节码加载前、字节码加载后三种时机来实现AOP
+
 ## 深刻理解其中的角色
+
 AOP联盟、aspectj、jboss AOP、Spring自身实现的AOP、Spring嵌入aspectj。特别是能用代码区分后两者
 
 ## 接口设计：
+
 AOP联盟定义的概念或接口：Pointcut（概念，没有定义对应的接口）、Joinpoint、Advice、MethodInterceptor、MethodInvocation
 
 SpringAOP针对上述Advice接口定义的接口及其实现类：BeforeAdvice、AfterAdvice、MethodBeforeAdvice、AfterReturningAdvice；针对aspectj对上述接口的实现AspectJMethodBeforeAdvice、AspectJAfterReturningAdvice、AspectJAfterThrowingAdvice、AspectJAfterAdvice。
@@ -88,9 +239,6 @@ SpringAOP定义的PointcutAdvisor接口（将上述Advice接口和Pointcut接口
 ## SpringAOP的调用流程
 
 ## SpringAOP自己的实现方式（代表人物ProxyFactoryBean）和借助aspectj实现方式区分
-
-
-
 
 # Spring事务体系源码以及分布式事务Jotm Atomikos源码实现
 ## jdbc事务存在的问题
