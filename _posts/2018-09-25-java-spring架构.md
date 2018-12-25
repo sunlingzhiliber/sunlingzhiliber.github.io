@@ -296,7 +296,91 @@ start transaction; DELETE FROM t WHERE id =6; INSERT INTO t VALUES(6); commit;
 ## Spring的JdbcTemplate
 ## hibernate
 ## JPA
+
 ## SpringDataJPA
+
+1. 分页
+
+```java
+Page<User> users = repository.findAll(new PageRequest(1, 20));
+```
+
+2. jpa
+
+```java
+interface UserRepository extends CrudRepository<User, Long> {
+  //count
+  long countByLastname(String lastname);
+
+  //remove
+  long deleteByLastname(String lastname);
+  List<User> removeByLastname(String lastname);
+
+//query
+List<Person> findByLastname(String lastname);
+
+  List<Person> findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
+
+  // Enables the distinct flag for the query
+  List<Person> findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
+  List<Person> findPeopleDistinctByLastnameOrFirstname(String lastname, String firstname);
+
+  // Enabling ignoring case for an individual property
+  List<Person> findByLastnameIgnoreCase(String lastname);
+  // Enabling ignoring case for all suitable properties
+  List<Person> findByLastnameAndFirstnameAllIgnoreCase(String lastname, String firstname);
+
+  // Enabling static ORDER BY for a query
+  List<Person> findByLastnameOrderByFirstnameAsc(String lastname);
+  List<Person> findByLastnameOrderByFirstnameDesc(String lastname);
+
+  Page<User> findByLastname(String lastname, Pageable pageable);
+
+Slice<User> findByLastname(String lastname, Pageable pageable);
+
+List<User> findByLastname(String lastname, Sort sort);
+
+List<User> findByLastname(String lastname, Pageable pageable);
+
+User findFirstByOrderByLastnameAsc();
+
+User findTopByOrderByAgeDesc();
+
+Page<User> queryFirst10ByLastname(String lastname, Pageable pageable);
+
+Slice<User> findTop3ByLastname(String lastname, Pageable pageable);
+
+List<User> findFirst10ByLastname(String lastname, Sort sort);
+
+List<User> findTop10ByLastname(String lastname, Pageable pageable);
+}
+```
+
+3. example
+
+```java
+Person person = new Person();
+person.setFirstname("Dave");
+
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withIgnorePaths("lastname")
+  .withIncludeNullValues()
+  .withStringMatcherEnding();
+
+  ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher("firstname", endsWith())
+  .withMatcher("lastname", startsWith().ignoreCase());
+
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher("firstname", match -> match.endsWith())
+  .withMatcher("firstname", match -> match.startsWith());
+
+Example<Person> example = Example.of(person,matcher);
+
+return personRepository.findAll(example,pageRequest,sort);
+
+```
+
 
 # 安全
 ## Session和Cookie的区别和联系以及Session的实现原理
@@ -316,3 +400,72 @@ start transaction; DELETE FROM t WHERE id =6; INSERT INTO t VALUES(6); commit;
 ## JdbcTemplate执行sql语句的过程中对Connection的使用和管理
 
 # HTTPS的实现原理
+
+# Swagger2 结合SpringBoot 生成API文档
+
+## @Api
+
+修饰整个类，描述Controller的作用
+
+## @ApiOperation
+
+描述一个类的一个方法，或者说一个接口
+
+`@ApiOperation(value="获取用户列表", notes="获取所有用户列表",produces = "application/json")`
+
+## @ApiParam
+
+单个参数描述，需要较少的参数，但是会侵入代码。
+针对于复杂对象，可以使用@ModelAttribute注解，该注解是SPringMVC的注解，但是可以被Swagger解析。
+
+## @ApiModel
+
+用对象来接收参数
+
+`@ApiModel(value = "User", description = "用户对象")`
+
+## @ApiProperty
+
+用对象接收参数时，描述对象的一个字段
+
+```java
+@ApiModelProperty(value = "ID",example = "1")
+private Integer id;
+```
+
+## @ApiResponse
+
+HTTP响应其中1个描述
+
+## @ApiResponses
+
+HTTP响应整体描述
+`@ApiResponses(value = {@ApiResponse(code = 405,message = "Invalid input",response = Integer.class)})`
+
+## @ApiIgnore
+
+使用该注解忽略这个API
+
+## @ApiError
+
+发生错误返回的信息
+
+## @ApiImplicitParam
+
+一个请求参数
+`@ApiImplicitParam(name = "id",value = "用户ID",dataType = "int",paramType = "path")`
+
+paramType  支持 path，query，body，header，form
+dataType 支持 "int","date","string","double","float","boolean","byte","object","long","date-time","——file","biginteger"，"bigdecimal"，"uuid"
+required 支持 true false
+
+## @ApiImplicitParams
+
+多个请求参数
+
+```java
+@ApiImplicitParams({  
+        @ApiImplicitParam(name = "id",value = "用户ID",paramType = "path",dataType = "int"),  
+        @ApiImplicitParam(name = "userName",value = "用户名称",paramType = "form",dataType = "string")
+})
+```
