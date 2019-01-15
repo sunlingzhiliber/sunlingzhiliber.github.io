@@ -456,8 +456,9 @@ HTTP响应整体描述
 `@ApiImplicitParam(name = "id",value = "用户ID",dataType = "int",paramType = "path")`
 
 paramType  支持 path，query，body，header，form
-dataType 支持 "int","date","string","double","float","boolean","byte","object","long","date-time","——file","biginteger"，"bigdecimal"，"uuid"
+dataType 支持 "int","date","string","double","float","boolean","byte","object","long","date-time","file","biginteger"，"bigdecimal"，"uuid"
 required 支持 true false
+allowMultiple=true,
 
 ## @ApiImplicitParams
 
