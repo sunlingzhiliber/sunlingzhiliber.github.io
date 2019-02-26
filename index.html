@@ -20,7 +20,8 @@ header-img: "img/home-bg-art.jpg"
         </div>
     </a>
     <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
+        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date:
+        "%B %-d, %Y" }}
     </p>
 </div>
 <hr>
@@ -41,3 +42,36 @@ header-img: "img/home-bg-art.jpg"
     {% endif %}
 </ul>
 {% endif %}
+
+
+
+<div style="position: fixed;
+right: 100px;
+bottom: 100px;
+color: #00adb5;">hh</div>
+
+<script src="./js/L2Dwidget.min.js"></script>
+<script>
+    L2Dwidget.init({
+        model: {
+            jsonPath: Math.random() > 0.5 ? "./resource/live2d-widget-model-hijiki/assets/hijiki.model.json" : "./resource/live2d-widget-model-tororo/assets/tororo.model.json"
+        },
+        display: {
+            superSample: 2,
+            width: (80 / 1424) * document.body.clientWidth,
+            height: ((80 / 1424) * document.body.clientWidth) / 0.8,
+            position: "right",
+            hOffset: 0,
+            vOffset: -20
+        },
+        mobile: {
+            show: true,
+            scale: 1,
+            motion: true
+        },
+        react: {
+            opacityDefault: 0.9,
+            opacityOnHover: 0.2
+        }
+    });
+</script>

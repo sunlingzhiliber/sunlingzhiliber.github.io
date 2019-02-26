@@ -470,3 +470,35 @@ allowMultiple=true,
         @ApiImplicitParam(name = "userName",value = "用户名称",paramType = "form",dataType = "string")
 })
 ```
+
+# RestTemplate
+
+- delete
+- exchange
+- execute
+- getForEntity
+- getForObject
+- postForEntity
+- postForObject
+- headForHeaders
+- optionsForAllow
+- postForLocation
+- put
+
+注意这里我们可以将请求分为两类一种是`Entity`,另一种是`Object`。
+
+## Entity
+
+返回值类型为`ResponseEntity`,它封装了返回的响应信息，包括响应状态，响应头和响应体。
+
+```java
+getForEntity("http://localhost:8080/item",Entity.class,map);//HashMap封装parameters
+getForEntity("http://localhost:8080/item/{id}",Entity.class,id);
+postForEntity("http://localhost:8080/item/{id}",object,response,id);
+postForEntity("http://localhost:8080/item",object,response,map);//HashMap封装parameters
+```
+
+## Object
+
+当我们只需要Body时，我们可以使用`getForObject`
+

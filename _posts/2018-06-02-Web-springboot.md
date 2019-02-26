@@ -120,7 +120,7 @@ public class BeanConfig {
 
 首先定义多线程池
 
-```java
+``` java
 @Configuration
 @EnableAsync
 public class TaskExecutorConfig implements AsyncConfigurer {
