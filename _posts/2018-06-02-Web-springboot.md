@@ -10,7 +10,30 @@ tags:
     - SpringBoot
 ---
 
+# SpringBoot
+
+随着Spring的发展，Spring越来越复杂。当我们启动一个新的Spring项目时，我们必须添加构建路径或添加Maven依赖关系，配置应用程序服务器，添加spring配置。而SpringBoot就是为了解决复杂的Spring配置出现的。
+SpringBoot建立在Spring架构之上，但是比Spring更简单更快捷。
+
+优点：
+
+- 减少开发，测试时间和努力。
+- 使用JavaConfig有助于避免使用XML。
+- 避免大量的Maven导入和各种版本冲突。
+- 提供意见发展方法。
+- 通过提供默认值快速开始开发，及**惯例大于配置**。
+- 没有单独的Web服务器需要。这意味着你不再需要启动Tomcat，Glassfish或其他任何东西。
+- 需要更少的配置 因为没有web.xml文件。只需添加用@ Configuration注释的类，然后添加用@Bean注释的方法，Spring将自动加载对象并像以前一样对其进行管理。您甚至可以将@Autowired添加到bean方法中，以使Spring自动装入需要的依赖关系中。
+- 基于环境的配置 使用这些属性，您可以将您正在使用的环境传递到应用程序：-Dspring.profiles.active = {enviornment}。在加载主应用程序属性文件后，Spring将在（application{environment} .properties）中加载后续的应用程序属性文件。
+
 # IOC和DI
+
+依赖倒置原则，寻求IOC（上层控制下层），实现的方法是DI。
+
+所谓的DI（dependency injection），就是把底层类作为参数传入上层类，实现上层类对下层类的“控制”。
+
+实现了DI 之后，我们在创建对象的时候仍然需要大量的构造代码，因此我们需要IOC容器，我们只需要维护一个Configuration（可以是xml可以是一段代码），而不用每次初始化一辆车都要亲手去写那一大段初始化的代码。这是引入IoC Container的第一个好处。IoC Container的第二个好处是：我们在创建实例的时候不需要了解其中的细节,我们只需要提供Config，然后利用IOC容器，自顶而下寻找依赖关系，到达底层后一步步向上创建。
+
 
 控制反转和依赖注入是Spring的的创建维护对象的关键。SpringIOC容器(ApplicationContext)负责创建容器。
 全局配置使用java配置(如数据库、MVC配置)，业务Bean由注解配置(@Component、@Service、@Repository、@Controller)
@@ -215,6 +238,9 @@ produces可以设置返回对象的媒体类型。
 
 ## 服务器端推送（SSE）
 
+
+
+
 # SpringBoot
 
 ## SSL的设置
@@ -225,19 +251,96 @@ produces可以设置返回对象的媒体类型。
 
 ## Spring Data
 
+[参考](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
+
 SpringData为我们使用统一的API来对不同的数据存储技术进行数据访问操作提供了支持。无论是关系数据库还是非关系数据库都可以以统一的标准进行访问。
 
 该标准包括CURD、查询、排序和分页。
 
 使用Spring Data JPA访问数据，只需要一个接口，集成JpaRepository。
 使用Spirng Data Repository可以极大减少数据访问层的代码。
-它还可以根据属性名对数据库中的实体进行操作，不用写实现，只用声明。
+它还可以根据**属性名对数据库中的实体进行操作，不用写实现，只用声明**。
 
-1.常规查询。
-2.限制结果数量
-利用top或者first来实现
-3.利用@Query写SQL语句
-4.Sort排序、Page分页
+返回的结果 我们可以用Optional VO Page Slice Stream包装
+
+大概的意思就是说Page实现了获取所有记录的数量和页面的总数，但是它是通过count query来计算的，所以这个代价就是很大的。
+所以，当我们有一个很大的数据集的时候，Slice可能就能满足我们的需求了。因为大多数时候，我们并不需要知道结果集总数是多少。
+
+1.常规查询
+
+find(get)\delete(remove)\count
+
+distinct 去重
+
+And 
+or 
+is,equals 
+Between
+IsBetween
+LessThan
+LessThanEqual
+GreaterThan
+IsGreaterThan
+GreaterThanEqual
+IsGreaterThanEqual
+After 针对时间
+IsAfter
+Before  针对时间
+IsBefore
+IsNull
+IsNotNull,NotNull	
+Like
+NotLike
+StartingWith  以XX开始
+EndingWith    以XX结束
+IsEndingWith
+EndsWith
+Containing    以 ** XX **
+IsContaining
+Contains
+OrderBy   Asc 或者Desc
+Not
+In   在集合中
+Near
+IsIn
+NotIn
+True
+False
+Exists 存在
+Regex
+Within
+IgnoreCase
+AllIgnoreCase 所有字段
+
+
+2.限制结果数量,利用top或者first或者all来实现
+
+这些关键字可以在后面加 数量后缀 `findTop10ByLastname`
+
+
+3.通过Pageable 结合Sort、Page 实现分页，排序
+
+4.利用@Query写原生查询语句
+```java
+   //mongo
+   @Query("{ 'age' : { $gt: ?0, $lt: ?1 } }")
+   List<User> findUsersByAgeBetween(int ageGT, int ageLT);
+
+  @Query(value="{ 'firstname' : ?0 }",fields="{ 'firstname' : 1, 'lastname' : 1}")
+
+   //JPQL
+   @Query("select u from User u")
+   @Query("select u from User u where u.emailAddress = ?1")
+   @Query("select u from User u where u.firstname like %?1")
+
+   //SQL 
+   @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
+```
+
+[mongo原生参考](http://www.cnblogs.com/egger/archive/2013/06/14/3135847.html)
+[Spring mongo db](https://www.baeldung.com/queries-in-spring-data-mongodb)
+
+
 
 ## 事务
 

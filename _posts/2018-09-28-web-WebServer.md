@@ -55,6 +55,12 @@ Connector使用ProtocolHandler来处理请求的，不同的ProtocolHandler代�
 
 # nginx
 
+## 基本配置
+
+
+`root`:root+location
+`alias`:alias 替换lication ，结尾必须是/ 否则会找不到文件的
+
 ## 负载均衡
 
 `nginx`的负载均衡属于`服务器端均衡`，在服务器端拥有服务实例的清单，在服务器进行负载均衡算法分配。
