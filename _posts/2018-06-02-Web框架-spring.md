@@ -65,6 +65,20 @@ Spirng 提供支持 `AspectJ(静态植入，在编译时将定义的切点方法
 （2） @Pointcut定义切点(可以定义为注解`@Pointcut("@annotation(*)")`，也可以定义为方法`@Pointcut("@execution(*)")`)
 （3） 围绕切点使用@Before、@After、@Around与@AfterReturning来定义advice
 
+### Spring的声明周期
+
+
+![Spring的声明周期](https://raw.githubusercontent.com/sunlingzhiliber/imgstore/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190722095148.jpg)
+
+- 容器启动后，对bean进行初始化，按照bean的定义，注入属性
+- 检测该bean是否存在XXXAware接口，并将相关XXXAware实例注入给bean，自此，该bean已正确构造。如：BeanNameAware、BeanFactoryAware、MessageSourceAware、ResourceLoaderAware、ApplicationEventPublisherAware
+- 检测是否实现了BeanPostProcessor接口，进行一些自定义**前处理**，如：postProcessBeforeInitialzation。
+- 调用@postConstruct、afterPropertiesSet,init-method等自定义方法。
+- 检测是否实现了BeanPostProcessor接口，进行一些自定义**后处理**，如：postProcessAfterInitialzation。
+- 经过以上步骤，Bean及可用。
+- 容器关闭时，如果Bean实现了DisposableBean接口，则会回调该接口的destroy()方法
+
+
 ## SpringBoot
 
 随着Spring的发展，Spring越来越复杂。当我们启动一个新的Spring项目时，我们必须添加大量构建路径或添加Maven依赖关系，配置应用程序服务器，添加spring配置。而SpringBoot就是为了解决复杂的Spring配置出现的。SpringBoot建立在Spring架构之上，但是比Spring更简单更快捷。
@@ -151,6 +165,7 @@ Spring Aware提供的接口包括：
 | MessageSourceAware             | 获取Message Source，这样可以获取文本信息     |
 | ResourceLoaderAware            | 获取资源加载器，可以获取外部资源             |
 | ApplicationEventPublisherAware | 获取发布事件，可以发布事件                   |
+
 
 ```java
 @Component
@@ -594,6 +609,9 @@ API网关服务：Spring Cloud Zuul
 
 ![功能划分](https://raw.githubusercontent.com/sunlingzhiliber/imgstore/master/20181126103717.png)
 
+
+
+
 ### 服务发现和治理：Eureka
 
 当我们将系统拆分为多个子系统之后，那么我们如何解决子系统之间的`通讯`问题呢？
@@ -733,6 +751,9 @@ public class DeptClientServiceFallbackFactory implements FallbackFactory<DeptCli
 - 简单来说，使用Spring Cloud Config就是将配置文件放到统一的位置管理(比如GitHub)，客户端通过接口去获取这些配置文件。
 - 在GitHub上修改了某个配置文件，应用加载的就是修改后的配置文件。
 
+### Sleuth+Zipkin
+
+将所有的请求数据记录下来，方便我们进行后续分析和获取额外的收益。
 
 ## Spring Data JPA
 
