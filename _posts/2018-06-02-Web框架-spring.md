@@ -43,6 +43,12 @@ Spring IOC容器(ApplicationContext)利用Java反射，负责创建对象，用�
 - Request：为每个HTTP request创建一个Bean实例
 - Session：为每个HTTP session创建一个Bean实例
 
+#### SpringBean
+
+在 Spring 中，那些组成应用程序的主体及由 Spring IOC 容器所管理的对象，被称之为 bean。简单地讲，bean 就是由 IOC 容器初始化、装配及管理的对象，除此之外，bean 就与应用程序中的其他对象没有什么区别了。
+
+Spring bean默认是单例的,这些单例Bean在多线程程序下如何保证线程安全呢？ 例如对于Web应用来说，Web容器对于每个用户请求都创建一个单独的Sevlet线程来处理请求，引入Spring框架之后，每个Action都是单例的，那么对于Spring托管的单例Service Bean，如何保证其安全呢？ Spring的单例是基于BeanFactory也就是Spring容器的，单例Bean在此容器内只有一个，Java的单例是基于 JVM，每个 JVM 内只有一个实例。
+
 #### 注入
 
 注入Bean有三种方式：
@@ -822,6 +828,9 @@ return personRepository.findAll(example,pageRequest,sort);
 
 ## Spring Security
 
+
+
+
 ## Spirng Batch
 
 ## 注解大全
@@ -978,3 +987,4 @@ org.springframework.data.mapping.MappingException: Cannot create a reference to 
 从这里来看，这个@DBRef是比较鸡肋的，甚至会以SQL的思维误导大家。
 
 使用情形大致是为了避免单个document过大，而模拟sql外键的作用。
+
