@@ -261,14 +261,14 @@
 <script>
     var day = new Date();
     var x = document.getElementsByTagName('body')[0];
-    x.style.background = 'url("/tangbao/img/bg' + day.getDay() + '.jpg") repeat';
+    x.style.background = 'url("./img/background/bg' + day.getDay() + '.jpg") repeat';
     x.style.backgroundSize = '100% auto';
 </script>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="/tangbao/js/three.min.js"></script>
-<script src="/tangbao/js/tween.min.js"></script>
-<script src="/tangbao/js/TrackballControls.js"></script>
-<script src="/tangbao/js/CSS3DRenderer.js"></script>
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/three.min.js"></script>
+<script src="./js/tween.min.js"></script>
+<script src="./js/TrackballControls.js"></script>
+<script src="./js/CSS3DRenderer.js"></script>
 <script>
     function timer() {
         var start = new Date('2018/09/01'); //2018/09/
@@ -566,7 +566,7 @@
     table.forEach((el, index) => {
         if (index < 100) {
             var num = index + 1;
-            el[4] = "/tangbao/img/" + num + ".jpg";
+            el[4] = "./img/beauty/" + num + ".jpg";
         }
 
     })
@@ -628,15 +628,6 @@
                 symbol.textContent = i + 1;
                 element.appendChild(symbol);
             }
-
-
-
-
-
-
-
-
-
 
 
 
